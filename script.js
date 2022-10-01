@@ -240,12 +240,41 @@ const products=[
     }
     }
     ]
+// const products=fetch('https://fakestoreapi.com/products/1')
+// .then(res=>res.json())
+// .then(json=>console.log(json))
 
 const autoCompleteInputTag=document.getElementsByClassName('autoCompleteInput')[0];
+const resultContainer=document.getElementsByClassName('resultContainer')[0];
 
 autoCompleteInputTag.addEventListener('keyup', event =>{
+    resultContainer.innerHTML="";
     const searchText=event.target.value.toLowerCase();
-    products.filter(product=>{
-        product.title.toLowerCase().includes(searchText);
+    if(searchText.length==0){
+        return;
+    }
+    const filteredProducts=products.filter(product=>{
+        return product.title.toLowerCase().includes(searchText);
     });
+
+    const hasProductsToShow= filteredProducts.length >0;
+    if(hasProductsToShow){
+        for(let i=0; i<filteredProducts.length; i++){
+            const productItemContainer=document.createElement('div');
+            productItemContainer.id=filteredProducts[i].id;
+            productItemContainer.classList.add('productItemContainer');
+
+            const productTitle=document.createElement('div');
+            productTitle.classList.add('productTitle');
+            productTitle.append(filteredProducts[i].title);
+
+            const productImg=document.createElement('img');
+            productImg.classList.add('productImg');
+            productImg.src=filteredProducts[i].image;
+
+            productItemContainer.append(productTitle,productImg);
+            resultContainer.append(productItemContainer);
+            
+        }
+    }
 });
