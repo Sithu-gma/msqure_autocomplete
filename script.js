@@ -240,10 +240,18 @@ const products=[
     }
     }
     ]
-// const products=fetch('https://fakestoreapi.com/products/1')
-// .then(res=>res.json())
-// .then(json=>console.log(json))
-
+// var products=[];
+// fetch('https://fakestoreapi.com/products')
+// .then(res=>{
+//     const products=res.json();
+//     return res;
+// })
+// .then(json=>{
+//     return products= json;
+// })
+// .catch((err)=>{
+//     console.log(ERROR,err);
+// })
 const autoCompleteInputTag=document.getElementsByClassName('autoCompleteInput')[0];
 const resultContainer=document.getElementsByClassName('resultContainer')[0];
 
