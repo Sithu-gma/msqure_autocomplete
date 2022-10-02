@@ -307,10 +307,23 @@ const navigateAndSelectProduct=key => {
         let productItemContainerToSelect=productSelect(indexToSelect);
         if(indexToSelect > 0){
             productDeSelect();
-
         }
         productItemContainerToSelect.classList.add("selected");
     }else if(key === "ArrowUp") {
+        if(indexToSelect=== -1) {
+            return;
+        }
+        if(indexToSelect===0){
+            productDeSelect();
+            indexToSelect= -1;
+            return
+        }
+        indexToSelect -= 1;
+        console.log(indexToSelect);
+        let productItemContainerToSelect=productSelect(indexToSelect);
+        productSelect(indexToSelect);
+        productDeSelect();
+        productItemContainerToSelect.classList.add("selected");
 
     } else {
 
