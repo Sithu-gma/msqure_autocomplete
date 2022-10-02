@@ -254,14 +254,22 @@ const products=[
 // })
 const autoCompleteInputTag=document.getElementsByClassName('autoCompleteInput')[0];
 const resultContainer=document.getElementsByClassName('resultContainer')[0];
-
+let filteredProducts=[];
 autoCompleteInputTag.addEventListener('keyup', event =>{
+    if(
+        event.key=="ArrowDown"||
+        event.key=="ArrowUp"||
+        event.key==="Enter") {
+
+            navigateAndSelectProduct(event.key);
+            return;
+        }
     resultContainer.innerHTML="";
     const searchText=event.target.value.toLowerCase();
     if(searchText.length==0){
         return;
     }
-    const filteredProducts=products.filter(product=>{
+    filteredProducts=products.filter(product=>{
         return product.title.toLowerCase().includes(searchText);
     });
 
@@ -286,3 +294,43 @@ autoCompleteInputTag.addEventListener('keyup', event =>{
         }
     }
 });
+let indexToSelect=-1;
+const navigateAndSelectProduct=key => {
+    if(key=== "ArrowDown"){
+        
+        if(indexToSelect === filteredProducts.length-1){
+            indexToSelect = -1;
+            productDeSelect();
+            return;
+        }
+        indexToSelect += 1; 
+        let productItemContainerToSelect=productSelect(indexToSelect);
+        if(indexToSelect > 0){
+            productDeSelect();
+
+        }
+        productItemContainerToSelect.classList.add("selected");
+    }else if(key === "ArrowUp") {
+
+    } else {
+
+    }
+}
+
+const productDeSelect=()=>{
+    const productIdToDeSelect=document.getElementsByClassName('selected')[0];
+                productIdToDeSelect.style.backgroundColor="white";
+                productIdToDeSelect.firstChild.style.color="black";
+                productIdToDeSelect.classList.remove("selected");
+}
+
+const productSelect=(index)=>{
+    let productIdToSelect= filteredProducts[index].id.toString();
+    const productItemContainerToSelect=document.getElementById(
+        productIdToSelect
+    )
+    productItemContainerToSelect.style.backgroundColor="#237bff";
+    productItemContainerToSelect.firstChild.style.color="white";
+      
+    return productItemContainerToSelect;
+}
