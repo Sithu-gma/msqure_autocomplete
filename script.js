@@ -319,17 +319,34 @@ const navigateAndSelectProduct=key => {
             return
         }
         indexToSelect -= 1;
-        console.log(indexToSelect);
         let productItemContainerToSelect=productSelect(indexToSelect);
         productSelect(indexToSelect);
         productDeSelect();
         productItemContainerToSelect.classList.add("selected");
 
     } else {
-
+        const enteredProduct=productSelect(indexToSelect);
+        console.log(enteredProduct);
+       
+        collectProduct(indexToSelect);
     }
 }
-
+const collectProduct=(indexToSelect)=>{
+    let tbl=document.getElementById('myTable');
+    let productId=filteredProducts[indexToSelect].id;
+    let productTitle=filteredProducts[indexToSelect].title;
+    let productImg=filteredProducts[indexToSelect].image;
+    console.log(productId);
+    console.log(productTitle);
+    console.log(productImg);
+    const data=`
+    <tr>
+    <td>${productId}</td>
+    <td>${productTitle}</td>
+    <td>${productImg}</td>
+    </tr>`;
+    tbl.innerHTML +=data;
+}
 const productDeSelect=()=>{
     const productIdToDeSelect=document.getElementsByClassName('selected')[0];
                 productIdToDeSelect.style.backgroundColor="white";
@@ -338,7 +355,7 @@ const productDeSelect=()=>{
 }
 
 const productSelect=(index)=>{
-    let productIdToSelect= filteredProducts[index].id.toString();
+    let productIdToSelect= filteredProducts[indexToSelect].id;
     const productItemContainerToSelect=document.getElementById(
         productIdToSelect
     )
