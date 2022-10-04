@@ -245,17 +245,25 @@ const products=[
     const resultContainer=document.getElementsByClassName('resultContainer')[0];
     let filteredProduct=[];
     autoCompleteInputTag.addEventListener('keyup', event => {
+        if(
+            event.key=="ArrowDown" ||
+            event.key== "ArrowUp"||
+            event.key== "Enter"
+        ){
+            navigateProduct(event.key);
+            return;
+        }
         
         resultContainer.innerHTML="";
         const searchText=event.target.value.toLowerCase();
         if(searchText.length=== 0){
             return;
         }
-        console.log("input",searchText);
+        // console.log("input",searchText);
         filteredProduct=products.filter(product=>{
            return product.title.toLowerCase().includes(searchText);
         });
-        console.log(filteredProduct);
+        
 
         const hasProductToShow=filteredProduct.length > 0 ;
         if (hasProductToShow){
@@ -278,6 +286,69 @@ const products=[
               resultContainer.append(productContainer);
                
             }
-        }
+        } 
         
     });
+
+    indexToSelect=-1;
+    const navigateProduct=key=>{
+        if(key === "ArrowDown"){
+            if(indexToSelect=== filteredProduct.length-1){
+                indexToSelect=-1;
+                deSelectProduct();
+                return ;
+            }
+            indexToSelect +=1;
+           selectDiv=selectProduct(indexToSelect);
+    
+            if(indexToSelect > 0){
+               deSelectProduct();
+            }
+            selectDiv.classList.add('selected');
+        }else if( key === "ArrowUp"){
+            if(indexToSelect=== -1 ){
+                return;
+            }
+            if(indexToSelect===0){
+                indexToSelect= -1;
+                deSelectProduct();
+                return;
+            }
+            indexToSelect -= 1;
+           
+          
+            const selectDiv=selectProduct(indexToSelect);
+            deSelectProduct();
+
+            selectDiv.classList.add('selected');
+        }else{
+            const productID=filteredProduct[indexToSelect].id;
+            const productTitle=filteredProduct[indexToSelect].title;
+            const productImage=filteredProduct[indexToSelect].image;
+            
+            const myTable=document.getElementById('myTable');
+
+            const createRow=`
+                <tr>
+                    <td>${ productID }</td>
+                    <td>${ productTitle }</td>
+                    <td><img src="${ productImage }" class="productImg"></td>
+                </tr>
+            `;
+            myTable.innerHTML+=createRow;
+        }
+    }
+    const selectProduct=index =>{
+        let  productIdToSelect=filteredProduct[index].id.toString();;
+        let selectDiv=document.getElementById(productIdToSelect);
+            selectDiv.style.backgroundColor="blue";
+            selectDiv.firstChild.style.color="white";
+            return selectDiv;
+    }
+    const deSelectProduct= ()=> {
+        deSelectDiv=document.getElementsByClassName('selected')[0];
+        deSelectDiv.style.backgroundColor="white";
+        deSelectDiv.firstChild.style.color="black";
+
+        deSelectDiv.classList.remove('selected');
+    }
